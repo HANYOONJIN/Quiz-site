@@ -151,6 +151,7 @@ class QuizItem extends Component {
     handleChange(e){
         this[e.target.name] = e.target.value;
     }
+    
 
     handleCreate(){
         this.setState({
@@ -356,6 +357,18 @@ class QuizItem extends Component {
                         <div>
                             <div name="quiztitle" style={{fontSize:'17px', width:'70%', color:'gray'}}
                             className="optionStyle">{this.quiztitle}</div>
+                            <div style={{fontSize:'17px', width:'15%', color:'gray', float:'right'}}
+                            className="optionStyle"><b>{this.score}점</b></div>
+                        </div>
+                        <div style={{marginTop:'1rem', marginBottom:'1rem'}}>
+                            <div style={{fontSize:'13px', width:'70%', color:'gray'}}
+                            className="optionStyle">{this.value}</div>
+                            <div style={{fontSize:'13px', width:'25%', color:'gray', float:'right'}}
+                            className="optionStyle">난이도 :
+                            { this.level == 'high' && ' 상' }
+                            { this.level == 'middle' && ' 중' }
+                            { this.level == 'low' && ' 하' }
+                            </div>
                         </div>
                         { readoptionList }
                     </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Authentication } from 'components/Auth';
 import { connect } from 'react-redux';
 import { loginRequest } from 'actions/authentication';
+import FacebookLogin from 'react-facebook-login';
 
 const Positioner = {
     position: 'absolute',
@@ -17,6 +18,7 @@ class Login extends React.Component {
         super(props);
 
         this.handleLogin = this.handleLogin.bind(this);
+        this.responseFacebook = this.responseFacebook.bind(this);
     }
 
     handleLogin(id, pw){
@@ -46,10 +48,22 @@ class Login extends React.Component {
         );
     }
 
+    responseFacebook() {
+        console.log('facebook Login');
+    }
+
     render() {
         return (
             <div style={Positioner}>
                 <Authentication mode={true} onLogin={this.handleLogin}/>
+                <FacebookLogin
+                    appId="518276648939123"  // facebook developer 페이지에 생성한 앱의 아이디
+                    autoLoad={false}
+                    fields="email"    // 페이스북에서 가져올 필드
+                    cssClass="my-facebook-button-class"    // 사용할 스타일
+                    callback={this.responseFacebook}    // 콜백함수 지정( container에 생성 )
+                    icon="fa-facebook-square"        // 아이콘 지정
+                    />
             </div>
         );
     }

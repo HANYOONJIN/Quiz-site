@@ -36,7 +36,8 @@ class SingleQuiz extends React.Component {
             quizListData: [],
             loginData: {},
             plusQuiz: [],
-            content: ''
+            content: '',
+            level: 'ALL'
         }
 
         this.type = this.type.bind(this);
@@ -45,6 +46,9 @@ class SingleQuiz extends React.Component {
         this.plusClick = this.plusClick.bind(this);
         this.plusQuiz = this.plusQuiz.bind(this);
         this.search = this.search.bind(this);
+        this.recommend = this.recommend.bind(this);
+
+        this.handleChange = this.handleChange.bind(this);
 
     }
 
@@ -59,6 +63,12 @@ class SingleQuiz extends React.Component {
             console.log('updateprev : '+nextProps.content);
             this.search(nextProps.content);
         }
+    }
+
+    handleChange(e){
+        this.setState({
+            [e.target.name]: e.target.value
+          });
     }
 
     type() {
@@ -92,6 +102,8 @@ class SingleQuiz extends React.Component {
             this.tagClick(tag);
         }else if(type=='search'){
             this.search(this.props.content);
+        }else if(type=='recommend'){
+            this.recommend(id);
         }
     }
 
@@ -220,6 +232,27 @@ class SingleQuiz extends React.Component {
         });
     }
 
+    recommend(id) {
+        let level = this.state.level;
+        if(level=='ALL') level = '';
+        axios.post('/api/board/recommendQuiz', {id, level})
+		.then((response) => {
+            this.setState({
+                quizListData : response.data.data.map(
+                    info => ({
+                        num: info.num,
+                        quizname: info.quizname,
+                        tag: info.tag,
+                        id: info.id 
+                    })
+                )
+            });
+		})
+		.catch((err)=>{
+			console.log('Error fetching recommendQuiz',err);
+        });
+    } 
+
     tagClick(tag) {
         axios.post('/api/board/selectTag',{tag})
         .then((response) => {
@@ -307,6 +340,21 @@ class SingleQuiz extends React.Component {
                 :
                 <div>
                     <div style={Positioner}>
+                        {this.props.type=='recommend' ? 
+                            <div style={{textAlign:'center', height:'50px'}}>
+                                    <select className="optionStyle" style={{width:'15%', height:'100%', fontSize:'12px', verticalAlign:'middle'}} 
+                                    name='level' value={this.state.level} onChange={this.handleChange}>
+                                        <option value="ALL">전체</option>
+                                        <option value="high">&nbsp;&nbsp;상</option>
+                                        <option value="middle">&nbsp;&nbsp;중</option>
+                                        <option value="low">&nbsp;&nbsp;하</option>
+                                    </select>
+                                    <i className="material-icons" 
+                                    onClick={() => this.recommend(this.state.loginData._id)}
+                                    style={{color:'#a4a4a4', fontSize:'50px', cursor: 'pointer', verticalAlign:'middle'}}>repeat</i>
+                            </div>
+                        : null
+                        }
                         <div style={linkDiv}><Link to='/quiz/singlequiz' style={linkStyle}>전체 보기</Link></div>
                         {View}
                     </div>

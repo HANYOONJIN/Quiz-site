@@ -27,6 +27,7 @@ class PackageList extends React.Component {
         this.exist = this.exist.bind(this);
         this.noneExist = this.noneExist.bind(this);
         this.search = this.search.bind(this);
+        this.recommend = this.recommend.bind(this);
 
     }
 
@@ -70,6 +71,8 @@ class PackageList extends React.Component {
             this.noneExist(id);
         }else if(type=='search'){
             this.search(this.props.content);
+        }else if(type=='recommend'){
+            this.recommend(id);
         }
     }
 
@@ -192,6 +195,25 @@ class PackageList extends React.Component {
         });
     }
 
+    recommend(id) {
+        axios.post('/api/board/recommendPackage', {id})
+		.then((response) => {
+            this.setState({
+                packageListData : response.data.data.map(
+                    info => ({
+                        num: info.num,
+                        title: info.title,
+                        content: info.content,
+                        id: info.id 
+                    })
+                )
+            });
+		})
+		.catch((err)=>{
+			console.log('Error fetching recommendPackage',err);
+        });
+    } 
+
     render() {
         const View = this.state.packageListData.map(data => {
             return <PackageItem num={data.num}
@@ -210,7 +232,15 @@ class PackageList extends React.Component {
 
         return (
             <div style={{marginTop:'30px'}}>
-                <div style={{width:'84%', marginLeft:'8%'}}>{View}</div>
+                {this.props.type=='recommend' ? 
+                    <div style={{textAlign:'center'}}>
+                            <i className="material-icons" 
+                            onClick={() => this.recommend(this.state.loginData._id)}
+                            style={{color:'#a4a4a4', fontSize:'60px', cursor: 'pointer'}}>repeat</i>
+                    </div>
+                : null
+                }
+                <div style={{width:'82%', marginLeft:'9%'}}>{View}</div>
                 {bar}
             </div>
         );

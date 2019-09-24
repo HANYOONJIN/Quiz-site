@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { PackageListC, WritePackage, ReadPackage, NewPackage, minePackageList, 
-    anotherPackageList, noneExistPackageList, existPackageList, searchPackage } from 'containers/Quiz';
-import { SingleQuizC, anotherQuiz, mineQuiz, existQuiz, noneExistQuiz, WriteQuiz, ReadQuiz, NewQuiz, tagSelectQuiz } from 'containers/SingleQuiz';
+    anotherPackageList, noneExistPackageList, existPackageList, searchPackage, recoPackageList } from 'containers/Quiz';
+import { SingleQuizC, anotherQuiz, mineQuiz, existQuiz, noneExistQuiz, WriteQuiz, ReadQuiz, NewQuiz, tagSelectQuiz, recoQuiz } from 'containers/SingleQuiz';
 
 class Quiz extends React.Component {
 
@@ -32,6 +32,9 @@ class Quiz extends React.Component {
                 <Route path="/quiz/newpackage" component={NewPackage}/>
 
                 <Route path="/quiz/searchPackage/:content" component={searchPackage}/>
+                <Route path="/quiz/recoPackageList" component={recoPackageList}/>
+                <Route path="/quiz/recoQuiz" component={recoQuiz}/>
+
             </div>
         );
     }

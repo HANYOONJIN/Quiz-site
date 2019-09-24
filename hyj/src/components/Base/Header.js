@@ -126,13 +126,13 @@ class Submenu1 extends React.Component {
             <Link to={this.props.isLoggedIn ? "/quiz/anotherPackageList" : "/auth/fail"}>남이 낸 문제집</Link>
           </li>
           <li className="nav__submenu-item ">
-            추천 문제집
+          <Link to={this.props.isLoggedIn ? "/quiz/recoPackageList" : "/auth/fail"}>추천 문제집</Link>
           </li>
         </ul>
         )
       }
     }
-
+    
 class Submenu2 extends React.Component {
     render() {
       return (
@@ -153,7 +153,7 @@ class Submenu2 extends React.Component {
             <Link to={this.props.isLoggedIn ? "/quiz/anotherQuiz" : "/auth/fail"}>남이 낸 문제</Link>
           </li>
           <li className="nav__submenu-item ">
-            추천 문제
+            <Link to={this.props.isLoggedIn ? "/quiz/recoQuiz" : "/auth/fail"}>추천 문제</Link>
           </li>
         </ul>
         )

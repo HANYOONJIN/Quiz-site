@@ -133,6 +133,24 @@ router.post('/searchPackage', (req, res) =>{
 	});
 });
 
+//추천 패키지 가져오기
+router.post('/recommendPackage', (req, res) =>{
+	const id = req.body.id;
+
+	let sql = "SELECT * FROM package WHERE NOT EXISTS "+
+	"(SELECT * FROM result WHERE package.num = result.package_number AND result.email = ?) AND NOT id = ? ORDER BY RAND() LIMIT 5";
+	let post = [id, id];
+	conn.query(sql, post, (err, results, fields) => {
+		if(err) {
+			return res.send(err);
+		}else {
+			return res.json({
+				data: results
+			})
+		}
+	});
+});
+
 //패키지 등록
 router.post("/packageInsert", (req, res) => {
 	const title = req.body.title;
@@ -242,6 +260,62 @@ router.post("/package_quizInsert", (req, res) => {
 		} else {
 			return res.status(200).json({
 				num : results.insertId
+			});
+		}
+	});
+});
+
+//패키지 삭제하기
+router.post("/packageDelete", (req, res) => {
+	const packagenum = req.body.packagenum;
+
+	let sql = "DELETE FROM package WHERE num = ?";
+	let post = [packagenum];
+	conn.query(sql, post, (err, results, fields) => {
+		if (err) {
+			console.log(err);
+			return res.status(400).json({
+			error: "db error"
+			});
+		} else {
+			return res.status(200).json();
+		}
+	});
+});
+
+//퀴즈 삭제하기
+router.post("/quizDelete", (req, res) => {
+	const quiznum = req.body.quiznum;
+
+	let sql = "DELETE FROM quiz WHERE num = ?";
+	let sql2 = "DELETE FROM pack_quiz WHERE quiz_num = ?";
+	let sql3 = "DELETE FROM result WHERE quiz_number = ?";
+	let post = [quiznum];
+	conn.query(sql, post, (err, results, fields) => {
+		if (err) {
+			console.log(err);
+			return res.status(400).json({
+			error: "db error"
+			});
+		} else {
+			conn.query(sql2, post, (err, results, fields) => {
+				if (err) {
+					console.log(err);
+					return res.status(400).json({
+					error: "db error"
+					});
+				} else {
+					conn.query(sql3, post, (err, results, fields) => {
+						if (err) {
+							console.log(err);
+							return res.status(400).json({
+							error: "db error"
+							});
+						} else {
+							return res.status(200).json();
+						}
+					});
+				}
 			});
 		}
 	});
@@ -368,6 +442,25 @@ router.post('/searchQuiz', (req, res) =>{
 	});
 });
 
+//추천 퀴즈 가져오기
+router.post('/recommendQuiz', (req, res) =>{
+	const id = req.body.id;
+	const level = req.body.level;
+	console.log(id+' : '+level)
+
+	let sql = "SELECT * FROM quiz WHERE NOT EXISTS "+
+	"(SELECT * FROM result WHERE quiz.num = result.quiz_number AND result.package_number = 0 AND result.email = ?) AND NOT id = ? AND level LIKE IF(? = '', '%', ?) ORDER BY RAND() LIMIT 10";
+	let post = [id, id, level, level];
+	conn.query(sql, post, (err, results, fields) => {
+		if(err) {
+			return res.send(err);
+		}else {
+			return res.json({
+				data: results
+			})
+		}
+	});
+});
 
 //퀴즈 가져오기
 router.post("/quizSelect", (req, res) => {

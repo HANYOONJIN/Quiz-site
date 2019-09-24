@@ -9,3 +9,4 @@ export { default as ReadQuiz } from './ReadQuiz';
 export { default as NewQuiz } from './NewQuiz';
 
 export { default as tagSelectQuiz } from './tagSelectQuiz';
+export { default as recoQuiz } from './recoQuiz';

@@ -8,4 +8,6 @@ export { default as anotherPackageList } from './anotherPackageList';
 export { default as existPackageList } from './existPackageList';
 export { default as noneExistPackageList } from './noneExistPackageList';
 
+export { default as recoPackageList } from './recoPackageList';
+
 export { default as searchPackage } from './searchPackage';

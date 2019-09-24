@@ -1,6 +1,9 @@
 import express from 'express';
 import path from 'path';
 
+import https from 'https';
+import fs from 'fs';
+
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
@@ -14,6 +17,11 @@ var MySQLStore = require("express-mysql-session")(session);
 
 import conn from "./db/mysql.js";
 
+const option = {
+  key: fs.readFileSync('server/keys/private.pem'),
+  cert: fs.readFileSync('server/keys/mycommoncrt.pem')
+};
+
 const app = express();
 const port = 3000;
 const devPort = 4000;
@@ -25,6 +33,7 @@ var options = {
     password: 'GKSdbswls1!',
     database: 'hyj'
 };
+
 const sessionStore = new MySQLStore(options);
 
 app.use(morgan('dev'));
@@ -53,7 +62,8 @@ app.use(function(err, req, res, next) {
   res.status(500).send('Something broke!');
 });
 
-app.listen(port, () => {
+
+https.createServer(option, app).listen(port, () => {
     console.log('Express is listening on port', port);
 });
 

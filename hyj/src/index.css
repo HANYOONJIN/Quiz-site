@@ -884,3 +884,41 @@ nav ul {
 	color: rgb(16, 32, 48);
 	border: 3px solid rgb(16, 32, 48);
 	}
+
+
+	/*-------------------------*/
+
+	.singlebutton66,
+  .singlebutton66::after {
+	-webkit-transition: all 0.3s;
+	  -moz-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	  transition: all 0.3s;
+  }
+  
+  .singlebutton66 {
+	background: none;
+	border: 3px solid rgb(146, 146, 146);
+	color: rgb(146, 146, 146);
+	display: inline-block;
+	font-size: 1em;
+	font-weight: bold;
+	  margin: 1em 1em;
+	  width: 7em;
+	  height: 2.5em;
+	  position: relative;
+	  text-transform: uppercase;
+  }
+  
+  .singlebutton66::before,
+  .singlebutton66::after {
+	background: rgb(146, 146, 146);
+	content: '';
+	position: absolute;
+	z-index: -1;
+  }
+  
+  .singlebutton66:hover {
+	color: rgb(16, 32, 48);
+	border: 3px solid rgb(16, 32, 48);
+	}

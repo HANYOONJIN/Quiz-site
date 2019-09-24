@@ -61,10 +61,26 @@ class WriteQuiz extends Component {
             AorB : true
         }
 
+        this.handleDelete = this.handleDelete.bind(this);
+
         this.ChangeA = this.ChangeA.bind(this);
         this.ChangeB = this.ChangeB.bind(this);
     }
 
+    handleDelete(){
+        const quiznum = this.props.match.params.num;
+
+        axios.post('/api/board/quizDelete',{quiznum})
+        .then((response) => {
+            console.log('Delete package!');
+            Materialize.toast('Success!', 2000);
+            this.props.history.push('/quiz/singlequiz');
+        })
+        .catch((err)=>{
+            console.log('Error fetching quizDelete',err);
+        });
+    }
+    
     ChangeA() {
         this.setState({
             AorB : true
@@ -81,12 +97,13 @@ class WriteQuiz extends Component {
 
         return (
             <div style={Positioner}>
-                <div className="ShadowedBox">
+                <div className="ShadowedBox" style={{marginBottom:'2rem'}}>
                     <div style={{textAlign:'center'}}>
                     <span style={ this.state.AorB ? AorBbutton : AorBbutton2 } onClick={this.ChangeA}>문제</span>
                     <span style={ this.state.AorB ? AorBbutton2 : AorBbutton }onClick={this.ChangeB}>결과</span>
                     </div>
                 </div>
+                <button className="savebutton" onClick={this.handleDelete}>D&nbsp;E&nbsp;L&nbsp;E&nbsp;T&nbsp;E</button>
                 { this.state.AorB ?
                 <div style={ShadowedBox}>
                     <QuizItem mode='write' content={this.props.match.params.num}/>

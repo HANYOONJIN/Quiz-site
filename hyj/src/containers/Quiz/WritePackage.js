@@ -99,6 +99,8 @@ class WritePackage extends Component {
 
         this.getWritePackageList = this.getWritePackageList.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+
         this.selectChange = this.selectChange.bind(this);
 
         this.ChangeA = this.ChangeA.bind(this);
@@ -138,6 +140,20 @@ class WritePackage extends Component {
     
     handleChange(e){
         this[e.target.name] = e.target.value;
+    }
+
+    handleDelete(){
+        const packagenum = this.props.match.params.num;
+
+        axios.post('/api/board/packageDelete',{packagenum})
+        .then((response) => {
+            console.log('Delete package!');
+            Materialize.toast('Success!', 2000);
+            this.props.history.push('/quiz/packageList');
+        })
+        .catch((err)=>{
+            console.log('Error fetching packageSelect',err);
+        });
     }
 
     selectChange(e) {
@@ -184,7 +200,6 @@ class WritePackage extends Component {
                 num={data.num}
                 content={data.content}
                 key={data.num}
-                onDelete={this.handleDelete}
               />
             )
           );
@@ -202,12 +217,13 @@ class WritePackage extends Component {
 
         return (
             <div style={Positioner}>
-                <div className="ShadowedBox">
+                <div className="ShadowedBox" style={{marginBottom:'2rem'}}>
                     <div style={{textAlign:'center'}}>
-                    <span style={ this.AorB ? AorBbutton : AorBbutton2 } onClick={this.ChangeA}>문제집</span>
-                    <span style={ this.AorB ? AorBbutton2 : AorBbutton }onClick={this.ChangeB}>결과</span>
+                        <span style={ this.AorB ? AorBbutton : AorBbutton2 } onClick={this.ChangeA}>문제집</span>
+                        <span style={ this.AorB ? AorBbutton2 : AorBbutton }onClick={this.ChangeB}>결과</span>
                     </div>
                 </div>
+                <button className="savebutton" onClick={this.handleDelete}>D&nbsp;E&nbsp;L&nbsp;E&nbsp;T&nbsp;E</button>
                 { this.AorB ?
                 <div>
                     <div style={ShadowedBox} className="ShadowedBox card-2">
